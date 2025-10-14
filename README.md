@@ -22,35 +22,80 @@ This registry contains all patterns from [Kibo UI](https://www.kibo-ui.com/) org
 
 ## 🚀 Quick Start
 
-### 1. Install shadcn (if not already installed)
+### 1. Clone and run this registry locally
 
 ```bash
-npx shadcn@latest init
+# Clone the repository
+git clone https://github.com/ailabs-393/Patterns-Registry.git
+cd Patterns-Registry
+
+# Install dependencies
+pnpm install
+
+# Build the registry
+pnpm registry:build
+
+# Start the development server
+pnpm dev
 ```
 
-### 2. Add this registry to your `components.json`
+The registry will be available at `http://localhost:3000`
+
+### 2. Set up shadcn MCP in your project
+
+Create or update `.mcp.json` in your project root:
 
 ```json
 {
-  "registries": {
-    "@kibo-patterns": {
-      "url": "https://your-registry-url.vercel.app/r/{name}.json"
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "shadcn@latest",
+        "mcp"
+      ]
     }
   }
 }
 ```
 
-### 3. Install patterns
+### 3. Add this registry to your `components.json`
+
+```json
+{
+  "registries": {
+    "@my-patterns": {
+      "url": "http://localhost:3000/r/{name}.json"
+    }
+  }
+}
+```
+
+**Note**: You can name the registry anything (e.g., `@my-patterns`, `@kibo-patterns`). Just make sure the URL points to `http://localhost:3000/r/{name}.json` while running locally.
+
+### 4. Install patterns
 
 ```bash
 # Install a button pattern
-npx shadcn@latest add @kibo-patterns/pattern-button-destructive-1
+npx shadcn@latest add @my-patterns/pattern-button-destructive-1
 
 # Install a form pattern
-npx shadcn@latest add @kibo-patterns/pattern-form-validation-1
+npx shadcn@latest add @my-patterns/pattern-form-validation-1
 
 # Install a chart pattern
-npx shadcn@latest add @kibo-patterns/pattern-chart-bar-default
+npx shadcn@latest add @my-patterns/pattern-chart-bar-default
+```
+
+### 5. Search patterns with MCP
+
+If you have the shadcn MCP configured, you can search patterns directly:
+
+```bash
+# Search for button patterns
+mcp__shadcn__search_items_in_registries --registries @my-patterns --query button
+
+# Search for form patterns
+mcp__shadcn__search_items_in_registries --registries @my-patterns --query form
 ```
 
 ## 📖 Documentation
@@ -122,72 +167,58 @@ Check out the [**PATTERNS_GUIDE.md**](./PATTERNS_GUIDE.md) for:
 
 </details>
 
-## 🏃 Running Locally
+## 📋 Requirements
 
-### Development Server
+- Node.js 18+ or 20+
+- pnpm (recommended) or npm
+- A Next.js project with shadcn/ui initialized
 
-```bash
-# Install dependencies
-pnpm install
+## 🔧 How It Works
 
-# Build the registry
-pnpm registry:build
+This registry works with shadcn's MCP (Model Context Protocol) server:
 
-# Start development server
-pnpm dev
-```
+1. **Local Server**: The registry runs on `http://localhost:3000` and serves pattern JSON files
+2. **components.json**: Your project's `components.json` points to the local registry
+3. **MCP Integration**: The shadcn MCP server reads your `components.json` and enables searching/installing patterns
+4. **Pattern Installation**: Use `npx shadcn@latest add` to install patterns from the registry
 
-The registry will be available at `http://localhost:3000`
+## 🌐 Deployment (Optional)
 
-### Using Locally
+If you want to host this registry online instead of running it locally:
 
-While the dev server is running, configure your project:
+### Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ailabs-393/Patterns-Registry)
+
+1. Import this repo to Vercel
+2. Deploy (automatic)
+3. Update your `components.json` with the Vercel URL:
 
 ```json
 {
   "registries": {
-    "@kibo-patterns": {
-      "url": "http://localhost:3000/r/{name}.json"
+    "@my-patterns": {
+      "url": "https://your-app.vercel.app/r/{name}.json"
     }
   }
 }
 ```
 
-## 🌐 Deployment
-
-### Deploy to Vercel (Recommended)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/kibo-patterns-registry)
-
-1. Push this repo to GitHub
-2. Import to Vercel
-3. Deploy (it's automatic!)
-4. Update your `components.json` with the Vercel URL
-
-## 📚 Examples
-
-### Search for patterns
-
-```bash
-# Find all button variants
-npx shadcn@latest search button
-
-# Find form patterns
-npx shadcn@latest search form
-
-# Find chart patterns
-npx shadcn@latest search chart
-```
+## 📚 Usage Examples
 
 ### Install multiple patterns
 
 ```bash
 # Install a complete form setup
 npx shadcn@latest add \
-  @kibo-patterns/pattern-form-basic-forms-1 \
-  @kibo-patterns/pattern-field-basic-inputs-1 \
-  @kibo-patterns/pattern-button-standard-1
+  @my-patterns/pattern-form-basic-forms-1 \
+  @my-patterns/pattern-field-basic-inputs-1 \
+  @my-patterns/pattern-button-standard-1
 ```
+
+### Browse patterns
+
+Check [PATTERNS_GUIDE.md](./PATTERNS_GUIDE.md) for a complete list of all 53 categories and 1,105 patterns
 
 ## 🎨 Pattern Showcase
 
@@ -232,8 +263,8 @@ MIT License - see the [LICENSE](LICENSE) file for details
 ## 📞 Support
 
 - 📖 [Documentation](./PATTERNS_GUIDE.md)
-- 🐛 [Report Issues](https://github.com/YOUR_USERNAME/kibo-patterns-registry/issues)
-- 💬 [Discussions](https://github.com/YOUR_USERNAME/kibo-patterns-registry/discussions)
+- 🐛 [Report Issues](https://github.com/ailabs-393/Patterns-Registry/issues)
+- 💬 [Discussions](https://github.com/ailabs-393/Patterns-Registry/discussions)
 
 ---
 
